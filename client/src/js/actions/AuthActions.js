@@ -6,7 +6,7 @@ import { REGISTER_USER, LOAD_USER, FAIL_USER, LOGIN_USER, LOGOUT_USER, CURRENT_U
 export const signup = (newUser) => async (dispatch) => {
 dispatch({ type: LOAD_USER });
 try {
-let result = await axios.post("/api/users/signup", newUser);
+let result = await axios.post("https://e-drive.onrender.com/api/users/signup", newUser);
 dispatch({ type: REGISTER_USER, payload: result.data });
 } catch (error) {
 dispatch({ type: FAIL_USER, payload: error.response });
@@ -17,7 +17,7 @@ dispatch({ type: FAIL_USER, payload: error.response });
 export const login = (user) => async (dispatch) => {
     dispatch({ type: LOAD_USER });
     try {
-    let result = await axios.post("/api/users/login", user);
+    let result = await axios.post("https://e-drive.onrender.com/api/users/login", user);
     dispatch({ type: LOGIN_USER, payload: result.data });
     } catch (error) {
     dispatch({ type: FAIL_USER, payload: error.response });
@@ -30,7 +30,7 @@ export const current = () => async (dispatch) => {
     try {
     const config = {
     headers: {Authorization: localStorage.getItem("token")}};
-    let result = await axios.get("/api/users/current", config);
+    let result = await axios.get("https://e-drive.onrender.com/api/users/current", config);
     dispatch({type: CURRENT_USER, payload: result.data,});
     } catch (error) {
     dispatch({type: FAIL_USER, payload: error.response});
