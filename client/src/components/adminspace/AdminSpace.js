@@ -18,26 +18,24 @@ import {
   Avatar,
   Button,
 } from "@mui/material";
-import { css } from "@emotion/css";
+import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
+import PersonRemoveAlt1Icon from "@mui/icons-material/PersonRemoveAlt1";
+import { useMediaQuery } from "@mui/material";
 
 const styles = {
-  table: css({
-    maxWidth: "850px",
-    margin: "auto",
-    boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
-    borderRadius: "12px",
-    overflow: "hidden",
-    transition: "transform 0.3s ease",
-    "&:hover": {
-      border: " 1px solid gray",
-    },
-  }),
   tableCell: {
     fontFamily: "Verdana",
     fontWeight: "bold",
     textAlign: "center",
     color: "#333",
-    width:"25%"
+    width: "25%",
+
+    "@media (max-width: 600px)": {
+      width: "30%",
+    },
+    "@media (max-width: 400px)": {
+      width: "40%",
+    },
   },
   avatar: {
     width: "60px",
@@ -56,6 +54,7 @@ function AdminSpace() {
   const superAdmin = useSelector((state) => state.AuthReducer.superAdmin);
   const person = useSelector((state) => state.UsersReducer.usersList);
   const load = useSelector((state) => state.UsersReducer.load);
+  const isSmallScreen = useMediaQuery("(max-width: 600px)");
 
   const setAdmin = (user) => {
     const updatedUser = {
@@ -89,7 +88,10 @@ function AdminSpace() {
       {load ? (
         <Loading />
       ) : person && person.users && person.users.length > 0 ? (
-        <TableContainer component={Paper} className={styles.table}>
+        <TableContainer
+          component={Paper}
+          style={{ ...styles.table, transform: isSmallScreen ? "none" : null }}
+        >
           <Table>
             <TableHead>
               <TableRow>
@@ -109,33 +111,29 @@ function AdminSpace() {
                       style={styles.avatar}
                     />
                   </TableCell>
-                  <TableCell
-                    sx={{
-                      width: "20%",
-                      textTransform: "uppercase",
-                      fontFamily: "Verdana",
-                    }}
-                  >
-                    {el.name}
-                  </TableCell>
-                  <TableCell
-                    style={{
-                      display: "none",
-                    }}
-                    className="mobile-only"
-                  >
-                    {el.email}
-                  </TableCell>
-                  <TableCell
-                    style={{
-                      display: "none",
-                    }}
-                    className="mobile-only"
-                  >
-                    {el.phone}
-                  </TableCell>
+                  <TableCell style={styles.tableCell}>{el.name}</TableCell>
+                  {isSmallScreen && (
+                    <>
+                      <TableCell
+                        style={{
+                          display: "none",
+                        }}
+                        className="mobile-only"
+                      >
+                        {el.email}
+                      </TableCell>
+                      <TableCell
+                        style={{
+                          display: "none",
+                        }}
+                        className="mobile-only"
+                      >
+                        {el.phone}
+                      </TableCell>
+                    </>
+                  )}
                   <TableCell>{el.isAdmin ? "Admin" : "User"}</TableCell>
-                  <TableCell sx={{ textAlign: "center" }}>
+                  <TableCell style={styles.tableCell}>
                     {(!el.isAdmin || superAdmin) && (
                       <Button
                         variant="contained"
@@ -153,7 +151,7 @@ function AdminSpace() {
                         fullWidth
                         onClick={() => setAdmin(el)}
                       >
-                        Admin
+                        <PersonAddAltIcon sx={{ marginRight: "10px" }} /> Admin
                       </Button>
                     )}
                     {superAdmin && el.isAdmin && (
@@ -163,7 +161,7 @@ function AdminSpace() {
                         fullWidth
                         onClick={() => removeAdmin(el)}
                       >
-                        Admin
+                        <PersonRemoveAlt1Icon sx={{ marginRight: "10px" }} /> Admin
                       </Button>
                     )}
                   </TableCell>

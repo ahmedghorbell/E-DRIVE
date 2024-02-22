@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -8,11 +8,13 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { signup } from "../../js/actions/AuthActions";
 import { FormControl, InputLabel, Input } from "@mui/material";
 import Upload from "../../components/upload/Upload";
+import { toast } from "react-toastify";
+
 
 const theme = createTheme();
 
@@ -20,6 +22,8 @@ export default function SignUp() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [newUser, setNewUser] = useState({});
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+  const isAuth = useSelector((state) => state.AuthReducer.isAuth);
 
   const handleChange = (e) => {
     setNewUser({ ...newUser, [e.target.name]: e.target.value });
@@ -27,9 +31,22 @@ export default function SignUp() {
 
   const handleUser = (e) => {
     e.preventDefault();
+    setIsFormSubmitted(true);
     dispatch(signup(newUser));
-    navigate("/");
   };
+
+  useEffect(() => {
+    if (isFormSubmitted) {
+      if (isAuth) {
+        toast("Account created successfully");
+        navigate("/");
+      } else {
+        toast("Failed signing up. Please try again.");
+      }
+    }
+  }, [isAuth, isFormSubmitted, navigate ]);
+
+
   const handleUploadSuccess = (imageUrl) => {
     setNewUser({
       ...newUser,
@@ -67,7 +84,7 @@ export default function SignUp() {
             />
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
-                <FormControl fullWidth>
+                <FormControl  sx={{marginTop: "15px"}} fullWidth>
                   <InputLabel htmlFor="name">Name</InputLabel>
                   <Input
                     id="name"
@@ -79,7 +96,7 @@ export default function SignUp() {
                 </FormControl>
               </Grid>
               <Grid item xs={12} sm={6}>
-                <FormControl fullWidth>
+                <FormControl sx={{marginTop: "15px"}}  fullWidth>
                   <InputLabel htmlFor="phone">Phone</InputLabel>
                   <Input
                     id="phone"

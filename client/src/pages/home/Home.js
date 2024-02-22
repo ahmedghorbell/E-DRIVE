@@ -3,7 +3,6 @@ import { Box, Divider, Typography } from "@mui/material";
 import Carousel from "react-material-ui-carousel";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts } from "../../js/actions/ProductAction";
-import { EffectCoverflow, Pagination, Navigation } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Link } from "react-router-dom";
 import "swiper/css";
@@ -11,6 +10,7 @@ import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import Loading from "../../components/loading/Loading";
+import SwiperCore, { EffectCoverflow, Pagination, Navigation } from 'swiper';
 
 const styles = {
   mainTitle: {
@@ -140,15 +140,15 @@ const Home = () => {
     },
   ];
 
+  SwiperCore.use([EffectCoverflow, Pagination, Navigation]);
+
   return (
     <>
       <Box>
         <Carousel
-          style={styles.carouselItem}
           animation="slide"
           indicators={false}
           navButtonsAlwaysVisible={true}
-          interval={5000}
         >
           {carouselItems.map((item, index) => (
             <div key={index}>
@@ -186,7 +186,6 @@ const Home = () => {
           slideShadows: true,
         }}
         navigation={true}
-        modules={[EffectCoverflow, Pagination, Navigation]}
         className="mySwiper"
         style={{ width: "100%", paddingBottom: "40px" }}
       >
@@ -195,38 +194,29 @@ const Home = () => {
         ) : (
           <>
             {Array.isArray(listProducts) &&
-              Array.from({ length: 15 }).map((_, index) => {
-                const randomIndex = Math.floor(
-                  Math.random() * listProducts.length
-                );
-                const product = listProducts[randomIndex];
-                listProducts.splice(randomIndex, 1);
-                return product ? (
-                  <SwiperSlide style={styles.swiperSlide} key={product._id}>
-                    <>
-                      {isAuth ? (
-                        <Link to={`/get_product/${product._id}`}>
-                          <img
-                            src={product.image}
-                            alt={product.title}
-                            style={styles.image}
-                          />
-                        </Link>
-                      ) : (
-                        <Link to="/login">
-                          <img
-                            src={product.image}
-                            alt={product.title}
-                            style={styles.image}
-                          />
-                        </Link>
-                      )}
-                    </>
-                    <p style={styles.product}>{product.name}</p>
-                    <p style={styles.product}>from {product.price} $</p>
-                  </SwiperSlide>
-                ) : null;
-              })}
+              listProducts.slice(0, 15).map((product) => (
+                <SwiperSlide style={styles.swiperSlide} key={product._id}>
+                  {isAuth ? (
+                    <Link to={`/get_product/${product._id}`}>
+                      <img
+                        src={product.image}
+                        alt={product.title}
+                        style={styles.image}
+                      />
+                    </Link>
+                  ) : (
+                    <Link to="/login">
+                      <img
+                        src={product.image}
+                        alt={product.title}
+                        style={styles.image}
+                      />
+                    </Link>
+                  )}
+                  <p style={styles.product}>{product.name}</p>
+                  <p style={styles.product}>from {product.price} $</p>
+                </SwiperSlide>
+              ))}
             <SwiperSlide style={styles.swiperSlide}>
               <Link to="/all_products">
                 <img

@@ -3,23 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { getProducts } from "../../js/actions/ProductAction";
 import ProductCards from "../productcard/ProductCard";
 import Loading from "../loading/Loading";
-import { Button } from "@mui/material";
-
-const styles = {
-but: {
-    margin:"10px",
-    border: '1px solid rgb(173 255 47)',
-    borderRadius: '8px',
-    color: 'rgb(173 255 47)',
-    padding: '6px 12px',
-    fontSize: '16px',
-    fontWeight:'bold',
-    textTransform: 'uppercase',
-    letterSpacing: '2px',
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
-    transition: 'background-color 0.3s ease',
-  }
-}
 
 
 const ProductList = () => {
@@ -42,8 +25,7 @@ const ProductList = () => {
   }, [listProducts]);
 
   return (
-    <div>
-      <Button style={styles.but} onClick={() => window.history.back()}>Back</Button>{" "}
+    <div style={{marginTop:100}}>
       <div
         style={{
           marginTop: "20px",

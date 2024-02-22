@@ -26,10 +26,18 @@ const Profile = () => {
   };
 
   return (
-    <Box sx={{ backgroundColor: "#eef3f8", padding: "40px" }}>
-      <Paper sx={{ padding: "40px", marginBottom: "40px" }}>
-        <Grid container spacing={4} alignItems="center">
-          <Grid item>
+    <Box
+      sx={{
+        backgroundColor: "#eef3f8",
+        padding: "40px",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <Paper sx={{ padding: "40px", marginBottom: "40px", width: "100%" }}>
+        <Grid container alignItems="center" justifyContent="center" spacing={4}>
+          <Grid item xs={12} sm={3} sx={{ textAlign: "center" }}>
             <Avatar
               alt={user?.name}
               src={
@@ -37,19 +45,18 @@ const Profile = () => {
                 "https://res.cloudinary.com/dzw5kfcko/image/upload/v1685657580/blank-profile-picture-973460_1280_rlvlki.png"
               }
               sx={{
-                width: "200px",
-                height: "200px",
+                width: "150px",
+                height: "150px",
                 borderRadius: "50%",
                 boxShadow: "0 0 15px #050505",
                 objectFit: "cover",
+                margin: "0 auto",
               }}
             />
-          </Grid>
-          <Grid item sx={{textAlign:"center"}}>
             <Typography
-              variant="h3"
-              gutterBottom
+              variant="h4"
               sx={{
+                margin: "15px 0",
                 color: "#333333",
                 fontFamily: "Papyrus",
                 fontWeight: "bold",
@@ -57,93 +64,53 @@ const Profile = () => {
             >
               {user && user.name}
             </Typography>
-            <Typography
-              variant="body1"
-              gutterBottom
-              sx={{
-                color: "#333333",
-                fontFamily: "Verdana",
-                fontSize: "20px",
-              }}
-            >
-              {" "}
-              {/* Custom text color */}
-              {user && user.email}
-            </Typography>
-            <Typography
-              variant="body1"
-              gutterBottom
-              sx={{
-                color: "#333333",
-                fontFamily: "Verdana",
-                fontSize: "20px",
-              }}
-            >
-              {" "}
-              {/* Custom text color */}
-              {user && user.phone}
-            </Typography>
           </Grid>
-        </Grid>
-      </Paper>
-      <Grid container spacing={4} justifyContent="center">
-        <Grid item md={3}>
-          <Paper sx={{ p: 3 }}>
-            <Typography
-              sx={{ fontFamily: "Verdana", fontSize: "30px" }}
-              gutterBottom
+          <Grid item xs={12} sm={9}>
+            <MenuList
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                flexWrap: "wrap",
+                gap: "20px",
+                paddingBottom: "10px",
+                fontFamily: "Verdana",
+                fontSize: "15px",
+              }}
             >
-              My space
-            </Typography>
-            <Divider sx={{ mb: 3 }} />
-            <MenuList>
-              <MenuItem
-                sx={{ fontFamily: "Verdana", fontSize: "15px" }}
-                onClick={() => handleButtonClick("My Cart")}
-              >
+              <MenuItem onClick={() => handleButtonClick("My Cart")}>
                 My Cart
               </MenuItem>
-              <MenuItem
-                sx={{ fontFamily: "Verdana", fontSize: "15px" }}
-                onClick={() => handleButtonClick("My Posts")}
-              >
+              <MenuItem onClick={() => handleButtonClick("My Posts")}>
                 My Posts
               </MenuItem>
-              <MenuItem
-                sx={{ fontFamily: "Verdana", fontSize: "15px" }}
-                onClick={() => handleButtonClick("Update Profile")}
-              >
+              <MenuItem onClick={() => handleButtonClick("Update Profile")}>
                 Update Profile
               </MenuItem>
-              <MenuItem
-                sx={{ fontFamily: "Verdana", fontSize: "15px" }}
-                onClick={() => handleButtonClick("Create an ad")}
-              >
+              <MenuItem onClick={() => handleButtonClick("Create an ad")}>
                 Create an ad
               </MenuItem>
               {isAdmin && (
-                <MenuItem
-                  sx={{ fontFamily: "Verdana", fontSize: "15px" }}
-                  onClick={() => {
-                    handleButtonClick("Admin Space");
-                  }}
-                >
+                <MenuItem onClick={() => handleButtonClick("Admin Space")}>
                   Admin Space
                 </MenuItem>
               )}
-              <MenuItem
-                sx={{ fontFamily: "Verdana", fontSize: "15px" }}
-                onClick={() => handleButtonClick("Contact Us")}
-              >
+              <MenuItem onClick={() => handleButtonClick("Contact Us")}>
                 Contact Us
               </MenuItem>
             </MenuList>
-          </Paper>
+          </Grid>
         </Grid>
-        <Grid item md={8}>
-          <Paper sx={{paddingBottom:"15px"}}>
-            <Typography sx={{ p: 3, fontFamily: "Verdana"}} variant="h5" gutterBottom>
-            {activeButton || ("My Cart" && <ShoppingCart />)}
+      </Paper>
+
+      <Grid container spacing={4} justifyContent="center">
+        <Grid item xs={12} md={8}>
+          <Paper sx={{ paddingBottom: "15px", width: "100%" }}>
+            <Typography
+              sx={{ p: 3, fontFamily: "Verdana" }}
+              variant="h5"
+              gutterBottom
+            >
+              {activeButton || ("My Cart" && <ShoppingCart />)}
             </Typography>
             <Divider sx={{ mb: 3 }} />
             {activeButton === "My Posts" && <MyPosts />}
